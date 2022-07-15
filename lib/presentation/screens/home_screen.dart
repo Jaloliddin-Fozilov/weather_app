@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:weather_app/data/models/weathet.dart';
-import 'package:weather_app/logic/cubits/weather/weather_cubit.dart';
-import 'package:weather_app/presentation/screens/search_screen.dart';
-import '../../helpers/extensions/string_extensions.dart';
+
+import '../../logic/blocs/weather/weather_bloc.dart';
 import '../widgets/city.dart';
 import '../widgets/temperature.dart';
 import '../widgets/weather_menu.dart';
@@ -23,13 +21,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _getWeather(String city) {
-    context.read<WeatherCubit>().getWeather(city);
+    context.read<WeatherBloc>().add(GetWeatherEvent(city));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocConsumer<WeatherCubit, WeatherState>(
+      body: BlocConsumer<WeatherBloc, WeatherState>(
         listener: (ctx, state) async {
           if (state is WeatherError) {
             await showDialog(

@@ -1,12 +1,15 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
+part 'settings_event.dart';
 part 'settings_state.dart';
 
-class SettingsCubit extends Cubit<SettingsState> {
-  SettingsCubit() : super(const SettingsState(tempUnits: TempUnits.celcius));
+class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
+  SettingsBloc() : super(const SettingsState(tempUnits: TempUnits.celcius)) {
+    on<ToggleTempEvent>(_toggleTemperature);
+  }
 
-  void toggleTemperature() {
+  void _toggleTemperature(ToggleTempEvent event, Emitter<SettingsState> emit) {
     if (state.tempUnits == TempUnits.celcius) {
       emit(
         const SettingsState(

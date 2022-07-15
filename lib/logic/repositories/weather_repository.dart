@@ -1,6 +1,5 @@
-import 'package:weather_app/logic/services/https/weather_api_services.dart';
-
 import '../../data/models/weathet.dart';
+import '../services/https/weather_api_services.dart';
 
 class WeatherRepository {
   final WeatherApiServices weatherApiServices;

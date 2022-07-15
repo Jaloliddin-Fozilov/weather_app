@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:weather_app/logic/cubits/settings/settings_cubit.dart';
 
 import '../../data/models/weathet.dart';
+import '../../logic/blocs/settings/settings_bloc.dart';
 
 class Temperature extends StatefulWidget {
   const Temperature({
@@ -18,7 +18,7 @@ class Temperature extends StatefulWidget {
 
 class _TemperatureState extends State<Temperature> {
   String _showTemp(double temp) {
-    final tempUnit = context.watch<SettingsCubit>().state.tempUnits;
+    final tempUnit = context.watch<SettingsBloc>().state.tempUnits;
     if (tempUnit == TempUnits.fahrenheit) {
       return '${(temp * 9 / 5 + 32).toStringAsFixed(0)}℉';
     }

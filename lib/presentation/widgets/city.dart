@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/helpers/extensions/string_extensions.dart';
 
 import '../../data/models/weathet.dart';
+import '../../helpers/extensions/string_extensions.dart';
 
 class City extends StatelessWidget {
   const City({

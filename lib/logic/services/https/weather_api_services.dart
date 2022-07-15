@@ -1,12 +1,10 @@
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:weather_app/data/constants/constants.dart';
-import 'package:weather_app/data/models/weathet.dart';
-import 'package:weather_app/logic/services/exceptions/weather_exceptions.dart';
+import '../../../data/constants/constants.dart';
+import '../../../data/models/weathet.dart';
+import '../exceptions/weather_exceptions.dart';
 
 class WeatherApiServices {
   final http.Client client;

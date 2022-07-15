@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/presentation/screens/settings_screen.dart';
 
 import '../screens/search_screen.dart';
+import '../screens/settings_screen.dart';
 
 class WeatherMenu extends StatelessWidget {
   final Function getWeather;

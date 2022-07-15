@@ -1,4 +1,4 @@
-part of 'settings_cubit.dart';
+part of 'settings_bloc.dart';
 
 enum TempUnits {
   celcius,
