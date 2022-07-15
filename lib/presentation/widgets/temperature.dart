@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather_app/logic/cubits/settings/settings_cubit.dart';
 
 import '../../data/models/weathet.dart';
 
-class Temperature extends StatelessWidget {
+class Temperature extends StatefulWidget {
   const Temperature({
     Key? key,
     required this.weather,
@@ -11,12 +13,25 @@ class Temperature extends StatelessWidget {
   final Weather weather;
 
   @override
+  State<Temperature> createState() => _TemperatureState();
+}
+
+class _TemperatureState extends State<Temperature> {
+  String _showTemp(double temp) {
+    final tempUnit = context.watch<SettingsCubit>().state.tempUnits;
+    if (tempUnit == TempUnits.fahrenheit) {
+      return '${(temp * 9 / 5 + 32).toStringAsFixed(0)}℉';
+    }
+    return '${temp.toStringAsFixed(0)}℃';
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '${weather.temperature.toStringAsFixed(0)}℃',
+          _showTemp(widget.weather.temperature),
           style: const TextStyle(
             fontSize: 70,
             color: Colors.white,
@@ -32,12 +47,12 @@ class Temperature extends StatelessWidget {
                 borderRadius: BorderRadius.circular(50),
               ),
               child: Image.network(
-                'http://openweathermap.org/img/wn/${weather.icon}.png',
+                'http://openweathermap.org/img/wn/${widget.weather.icon}.png',
                 fit: BoxFit.cover,
               ),
             ),
             Text(
-              weather.main,
+              widget.weather.main,
               style: const TextStyle(
                 fontSize: 30,
                 color: Colors.white,
