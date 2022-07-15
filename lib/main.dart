@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart';
+import 'package:weather_app/presentation/screens/search_screen.dart';
 
 import 'logic/cubits/cubit/weather_cubit.dart';
 import 'logic/repositories/weather_repository.dart';
@@ -37,6 +38,9 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.blue,
           ),
           home: const HomeScreen(),
+          routes: {
+            SearchScreen.routName: (ctx) => SearchScreen(),
+          },
         ),
       ),
     );

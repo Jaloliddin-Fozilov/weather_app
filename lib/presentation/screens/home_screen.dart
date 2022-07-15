@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather_app/data/models/weathet.dart';
 import 'package:weather_app/logic/cubits/cubit/weather_cubit.dart';
+import 'package:weather_app/presentation/screens/search_screen.dart';
 import '../../helpers/extensions/string_extensions.dart';
+import '../widgets/city.dart';
+import '../widgets/temperature.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -14,16 +18,20 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<WeatherCubit>().getWeather('moscow');
+    _getWeather('Chirchiq');
+  }
+
+  void _getWeather(String city) {
+    context.read<WeatherCubit>().getWeather(city);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocConsumer<WeatherCubit, WeatherState>(
-        listener: (ctx, state) {
+        listener: (ctx, state) async {
           if (state is WeatherError) {
-            showDialog(
+            await showDialog(
               context: context,
               builder: (ctx) => AlertDialog(
                 title: const Text('Error'),
@@ -36,6 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             );
+            _getWeather('Chirchiq');
           }
         },
         builder: (ctx, state) {
@@ -68,9 +77,27 @@ class _HomeScreenState extends State<HomeScreen> {
                   imagePath,
                   fit: BoxFit.cover,
                   height: double.infinity,
+                  width: double.infinity,
                 ),
                 Container(
                   color: Colors.black.withOpacity(0.4),
+                ),
+                Positioned(
+                  right: 0,
+                  top: 40,
+                  child: IconButton(
+                    onPressed: () async {
+                      final _city = await Navigator.of(context)
+                          .pushNamed(SearchScreen.routName);
+                      if (_city != null) {
+                        _getWeather(_city as String);
+                      }
+                    },
+                    icon: const Icon(
+                      Icons.search,
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
                 SafeArea(
                   child: Padding(
@@ -79,61 +106,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              weather.city.capitalizeString(),
-                              style: const TextStyle(
-                                fontSize: 40,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              weather.description,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '${weather.temperature.toStringAsFixed(0)}℃',
-                              style: const TextStyle(
-                                fontSize: 70,
-                                color: Colors.white,
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                Container(
-                                  width: 40,
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey,
-                                    borderRadius: BorderRadius.circular(50),
-                                  ),
-                                  child: Image.network(
-                                    'http://openweathermap.org/img/wn/${weather.icon}@2x.png',
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                                Text(
-                                  weather.main,
-                                  style: const TextStyle(
-                                    fontSize: 30,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
+                        City(weather: weather),
+                        Temperature(weather: weather),
                       ],
                     ),
                   ),
